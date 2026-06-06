@@ -2,7 +2,7 @@
 
 **A NASA-data-powered AI dashboard that turns asteroid and space weather data into mathematical risk scores and mission briefings.**
 
-[![Live Demo](https://img.shields.io/badge/demo-coming%20soon-4d7cff?style=flat-square)](#)
+[![Live Demo](https://img.shields.io/badge/demo-live-34d399?style=flat-square)](https://bebecpp.github.io/helioguard-ai/)
 ![Screenshot placeholder](docs/screenshot-placeholder.png)
 
 > **Screenshot:** Add a full-page dashboard screenshot to `docs/screenshot-placeholder.png` before submitting to Stardance.
