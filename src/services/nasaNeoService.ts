@@ -1,5 +1,6 @@
 import type { AsteroidRiskResult, NeoFeedResponse, NearEarthObject } from '../types/nasa';
 import { aggregateAsteroidRisk, buildAsteroidRiskResult } from '../utils/asteroidRisk';
+import { getNasaApiKey, nasaFetchJson } from './nasaFetch';
 
 const NEO_BASE = 'https://api.nasa.gov/neo/rest/v1/feed';
 
@@ -28,16 +29,12 @@ function flattenNeoFeed(response: NeoFeedResponse): NearEarthObject[] {
 }
 
 export async function fetchNeoFeed(): Promise<NeoFeedResponse> {
-  const apiKey = import.meta.env.VITE_NASA_API_KEY || 'DEMO_KEY';
+  const apiKey = getNasaApiKey();
   const { startDate, endDate } = getDateRange();
   const url = `${NEO_BASE}?start_date=${startDate}&end_date=${endDate}&api_key=${apiKey}`;
+  const cacheKey = `neo_${startDate}_${endDate}`;
 
-  const response = await fetch(url);
-  if (!response.ok) {
-    throw new Error(`NASA NeoWs API failed (${response.status}): ${response.statusText}`);
-  }
-
-  return response.json() as Promise<NeoFeedResponse>;
+  return nasaFetchJson<NeoFeedResponse>(url, cacheKey);
 }
 
 export async function fetchAsteroidRiskData(limit = 10): Promise<{

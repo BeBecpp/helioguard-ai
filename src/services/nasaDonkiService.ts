@@ -1,5 +1,6 @@
 import type { SpaceWeatherEvent } from '../types/nasa';
 import { calculateEventSeverity } from '../utils/spaceWeatherRisk';
+import { getNasaApiKey, nasaFetchJson, nasaThrottleGap } from './nasaFetch';
 
 const DONKI_BASE = 'https://api.nasa.gov/DONKI';
 
@@ -39,17 +40,16 @@ interface DonkiFlare {
 }
 
 async function fetchDonki<T>(path: string): Promise<T[]> {
-  const apiKey = import.meta.env.VITE_NASA_API_KEY || 'DEMO_KEY';
+  const apiKey = getNasaApiKey();
   const { startDate, endDate } = getDonkiRange();
   const url = `${DONKI_BASE}${path}?startDate=${startDate}&endDate=${endDate}&api_key=${apiKey}`;
+  const cacheKey = `donki_${path}_${startDate}_${endDate}`;
 
-  const response = await fetch(url);
-  if (!response.ok) {
-    throw new Error(`DONKI ${path} failed (${response.status})`);
+  try {
+    return await nasaFetchJson<T[]>(url, cacheKey);
+  } catch {
+    return [];
   }
-
-  const data = await response.json();
-  return Array.isArray(data) ? data : [];
 }
 
 function mapNotifications(items: DonkiNotification[]): SpaceWeatherEvent[] {
@@ -100,42 +100,26 @@ function mapFlares(items: DonkiFlare[]): SpaceWeatherEvent[] {
   });
 }
 
+/** Sequential DONKI calls to avoid bursting DEMO_KEY rate limits. */
 export async function fetchSpaceWeatherEvents(): Promise<{
   events: SpaceWeatherEvent[];
   unavailable: boolean;
   error?: string;
 }> {
   try {
-    const [notifications, cmes, flares] = await Promise.allSettled([
-      fetchDonki<DonkiNotification>('/notifications'),
-      fetchDonki<DonkiCme>('/CME'),
-      fetchDonki<DonkiFlare>('/FLR'),
-    ]);
+    const notifications = await fetchDonki<DonkiNotification>('/notifications');
+    await nasaThrottleGap();
 
-    const events: SpaceWeatherEvent[] = [];
+    const cmes = await fetchDonki<DonkiCme>('/CME');
+    await nasaThrottleGap();
 
-    if (notifications.status === 'fulfilled') {
-      events.push(...mapNotifications(notifications.value));
-    }
-    if (cmes.status === 'fulfilled') {
-      events.push(...mapCme(cmes.value));
-    }
-    if (flares.status === 'fulfilled') {
-      events.push(...mapFlares(flares.value));
-    }
+    const flares = await fetchDonki<DonkiFlare>('/FLR');
 
-    const allFailed =
-      notifications.status === 'rejected' &&
-      cmes.status === 'rejected' &&
-      flares.status === 'rejected';
-
-    if (allFailed) {
-      return {
-        events: [],
-        unavailable: true,
-        error: 'All DONKI endpoints unavailable',
-      };
-    }
+    const events: SpaceWeatherEvent[] = [
+      ...mapNotifications(notifications),
+      ...mapCme(cmes),
+      ...mapFlares(flares),
+    ];
 
     events.sort(
       (a, b) => new Date(b.startTime).getTime() - new Date(a.startTime).getTime(),

@@ -42,10 +42,9 @@ function App() {
     setError(null);
 
     try {
-      const [asteroidResult, weatherResult] = await Promise.all([
-        fetchAsteroidRiskData(10),
-        fetchSpaceWeatherEvents(),
-      ]);
+      // NeoWs first (critical); DONKI after — avoids 4 parallel hits on DEMO_KEY
+      const asteroidResult = await fetchAsteroidRiskData(10);
+      const weatherResult = await fetchSpaceWeatherEvents();
 
       setPhase('calculating');
 
