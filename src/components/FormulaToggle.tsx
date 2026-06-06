@@ -1,0 +1,46 @@
+import { useState } from 'react';
+import { Calculator } from 'lucide-react';
+
+interface FormulaToggleProps {
+  studentMode?: boolean;
+}
+
+export function FormulaToggle({ studentMode }: FormulaToggleProps) {
+  const [show, setShow] = useState(false);
+
+  return (
+    <div className="formula-toggle">
+      <button
+        type="button"
+        className="formula-toggle-btn"
+        onClick={() => setShow((v) => !v)}
+        aria-expanded={show}
+      >
+        <Calculator size={14} />
+        {show ? 'Hide formula' : 'How is this calculated?'}
+      </button>
+      {show && (
+        <div className="formula-snippet">
+          {studentMode ? (
+            <>
+              <p>
+                <strong>HelioGuard Index</strong> = 45% asteroid score + 55% space weather score
+              </p>
+              <p className="formula-detail">
+                Asteroid score uses size, speed, how close the flyby is, and whether NASA marks it
+                potentially hazardous.
+              </p>
+            </>
+          ) : (
+            <>
+              <code>HelioGuardIndex = 0.45 × AsteroidRisk + 0.55 × SpaceWeatherRisk</code>
+              <code className="formula-block">
+                AsteroidRisk = 100 × clamp(0.30×S_d + 0.20×S_v + 0.35×S_dist + 0.15×H, 0, 1)
+              </code>
+            </>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
