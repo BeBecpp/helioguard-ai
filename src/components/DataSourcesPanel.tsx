@@ -38,7 +38,7 @@ export function DataSourcesPanel({ dateRange }: DataSourcesPanelProps) {
 
         <div className="data-sources-docs">
           <a
-            href="https://github.com/bebecpp/helioguard-ai/blob/main/docs/RESEARCH.md"
+            href="https://github.com/BeBecpp/helioguard-ai/blob/main/docs/RESEARCH.md"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -46,7 +46,7 @@ export function DataSourcesPanel({ dateRange }: DataSourcesPanelProps) {
             Research Documentation
           </a>
           <a
-            href="https://github.com/bebecpp/helioguard-ai"
+            href="https://github.com/BeBecpp/helioguard-ai"
             target="_blank"
             rel="noopener noreferrer"
           >

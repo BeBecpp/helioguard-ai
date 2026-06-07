@@ -27,3 +27,7 @@ dist-ssr
 .env
 .env.local
 .env.*.local
+
+# Local tooling — do not publish
+sigma/
+sigma.zip
