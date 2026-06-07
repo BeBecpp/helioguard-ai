@@ -17,6 +17,12 @@ HelioGuard AI is an educational space risk intelligence dashboard built for Hack
 
 ---
 
+## Premium Arcade Interface
+
+HelioGuard AI now uses a premium arcade-inspired space interface with a landing page and detailed dashboard. The landing page introduces the mission visually, while the Launch App flow opens a more detailed educational dashboard for asteroid reports, risk formulas, space weather summaries, and NASA data sources.
+
+---
+
 ## Visual Design Philosophy
 
 HelioGuard AI uses a handcrafted pixel-art space mission interface to make real NASA public data more approachable for students. The design combines playful space visuals with serious risk modeling, so the project feels exciting without losing scientific clarity.
@@ -37,13 +43,21 @@ Design highlights:
 - Educational notes and tooltips on every major section
 - Reduced motion support via `prefers-reduced-motion`
 
-### Screenshot checklist (Stardance)
+## Retro Arcade Redesign
 
-- Hero Mission Launch (left copy + right orbit scene)
-- Mission Risk Console with gauge
-- ORBIT-01 Mission Briefing (Crew Takeaway visible)
-- Asteroid Object Reports grid
-- Space Weather Mission Log
+The interface was redesigned to feel like a **90s pixel-art educational space arcade** — chunky HUD panels, Press Start 2P headings, VT323 terminal text, CRT scanlines, and blocky CSS/SVG sprites instead of modern SaaS polish. NASA asteroid and space weather data stay serious under the hood; the game-like shell makes risk scores and briefings more engaging for student explorers.
+
+Key screen elements:
+
+- **Arcade menu header** — pixel rocket logo, mission tabs, Launch App button
+- **Hero game screen** — split layout with pixel Earth, rocket, asteroids, orbit trails
+- **Mission Risk Console** — HelioGuard Index HUD with segmented pixel risk bars
+- **ORBIT-01 Briefing Core** — purple terminal window with bot sprite and green status lines
+- **Game item asteroid cards** — top 3 NEO reports with thick pixel borders
+- **Student quest card** — pixel explorer character and Start Exploring CTA
+- **Warning strip** — educational disclaimer in arcade alert style
+
+The homepage is **compact and screenshot-ready** — no long scroll of raw NASA dumps.
 
 ---
 

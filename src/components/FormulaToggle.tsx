@@ -30,12 +30,20 @@ export function FormulaToggle({ studentMode }: FormulaToggleProps) {
                 Asteroid score uses size, speed, how close the flyby is, and whether NASA marks it
                 potentially hazardous.
               </p>
+              <code className="formula-block">
+                {`AsteroidRisk = 100 × clamp(\n  0.30 × Size +\n  0.20 × Speed +\n  0.35 × Closeness +\n  0.15 × HazardFlag,\n  0, 1\n)`}
+              </code>
+              <code className="formula-block">
+                HelioGuardIndex = 0.45 × AsteroidRisk + 0.55 × SpaceWeatherRisk
+              </code>
             </>
           ) : (
             <>
-              <code>HelioGuardIndex = 0.45 × AsteroidRisk + 0.55 × SpaceWeatherRisk</code>
               <code className="formula-block">
-                AsteroidRisk = 100 × clamp(0.30×S_d + 0.20×S_v + 0.35×S_dist + 0.15×H, 0, 1)
+                {`AsteroidRisk = 100 × clamp(\n  0.30 × S_diameter +\n  0.20 × S_velocity +\n  0.35 × S_distance +\n  0.15 × H,\n  0, 1\n)`}
+              </code>
+              <code className="formula-block">
+                HelioGuardIndex = 0.45 × AsteroidRisk + 0.55 × SpaceWeatherRisk
               </code>
             </>
           )}
